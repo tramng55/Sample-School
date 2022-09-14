@@ -1,6 +1,8 @@
 using ContosoUniversity.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<Sample_SchoolDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Sample_SchoolDbContext") ?? throw new InvalidOperationException("Connection string 'Sample_SchoolDbContext' not found.")));
@@ -8,8 +10,22 @@ builder.Services.AddDbContext<Sample_SchoolDbContext>(options =>
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {  
+        var context = services.GetRequiredService<Sample_SchoolDbContext>();
+        DbInitializer.Initialize(context);
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occurred creating the DB.");
+    }
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
