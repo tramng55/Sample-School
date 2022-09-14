@@ -1,5 +1,11 @@
+using ContosoUniversity.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 var builder = WebApplication.CreateBuilder(args);
-//Test
+builder.Services.AddDbContext<Sample_SchoolDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Sample_SchoolDbContext") ?? throw new InvalidOperationException("Connection string 'Sample_SchoolDbContext' not found.")));
+    
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
