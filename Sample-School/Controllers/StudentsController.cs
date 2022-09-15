@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using ContosoUniversity.Models;
 using ContosoUniversity.Data;
 using ContosoUniversity;
+using ContosoUniversity.Models.SchoolViewModels;
 
 namespace Sample_School.Controllers
 {
@@ -62,7 +63,7 @@ namespace Sample_School.Controllers
                     students = students.OrderBy(s => s.LastName);
                     break;
             }
-            int pageSize = 3;
+            int pageSize = 10;
             return View(await PaginatedList<Student>.CreateAsync(students.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
@@ -220,5 +221,6 @@ namespace Sample_School.Controllers
                 return RedirectToAction(nameof(Delete), new { id = id, saveChangesError = true });
             }
         }
+        
     }
 }
