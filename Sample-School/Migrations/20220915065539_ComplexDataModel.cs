@@ -59,6 +59,28 @@ namespace Sample_School.Migrations
                         principalTable: "Instructor",
                         principalColumn: "ID");
                 });
+            migrationBuilder.Sql("INSERT INTO dbo.Department (Name, Budget, StartDate) VALUES ('Temp', 0.00, GETDATE())");
+            // Default value for FK points to department created above, with
+            // defaultValue changed to 1 in following AddColumn statement.
+            migrationBuilder.AddColumn<int>(
+                name: "DepartmentID",
+                table: "Course",
+                nullable: false,
+                defaultValue: 1);
+            migrationBuilder.AlterColumn<string>(
+                name: "Title",
+                table: "Course",
+                maxLength: 50,
+                nullable: true,
+                oldClrType: typeof(string),
+                oldNullable: true);
+
+            //migrationBuilder.AddColumn<int>(
+                //name: "DepartmentID",
+                //table: "Course",
+                //nullable: false,
+                //defaultValue: 1);
+
 
             migrationBuilder.CreateTable(
                 name: "OfficeAssignment",
