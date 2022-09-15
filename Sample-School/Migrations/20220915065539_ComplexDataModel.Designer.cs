@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Sample_School.Migrations
 {
     [DbContext(typeof(Sample_SchoolDbContext))]
-    [Migration("20220915045127_ComplexDataModel")]
+    [Migration("20220915065539_ComplexDataModel")]
     partial class ComplexDataModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
