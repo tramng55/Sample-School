@@ -47,9 +47,8 @@ namespace Sample_School.Controllers
         }
 
         // GET: Courses/Create
-        public IActionResult Create()
+        public IActionResult UpdateCourseCredits()
         {
-            PopulateDepartmentsDropDownList();
             return View();
         }
 
@@ -57,17 +56,16 @@ namespace Sample_School.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CourseID,Credits,DepartmentID,Title")] Course course)
+        public async Task<IActionResult> UpdateCourseCredits(int? multiplier)
         {
-            if (ModelState.IsValid)
+            if (multiplier != null)
             {
-                _context.Add(course);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                ViewData["RowsAffected"] =
+                    await _context.Database.ExecuteSqlRawAsync(
+                        "UPDATE Course SET Credits = Credits * {0}",
+                        parameters: multiplier);
             }
-            PopulateDepartmentsDropDownList(course.DepartmentID);
-            return View(course);
+            return View();
         }
 
         // GET: Courses/Edit/5
